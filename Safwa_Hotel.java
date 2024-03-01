@@ -3,16 +3,21 @@ import java.util.Scanner;
 public class Safwa_Hotel {
 
     private static Scanner input = new Scanner(System.in);
-    private static String[] single_rooms = {"100", "102", "104"};
+    private static String[] single_rooms = {"101", "102", "104"};
     private static String[] double_rooms = {"201", "203", "204"};
+    private static int[] Cost = {1000, 2000};
+    private static String currentUser = null;
+    private static String bookedRoom = null;
 
     public static void main(String[] args) {
+        System.out.print("Enter your name: ");
+        currentUser = input.nextLine();
+
         int options;
 
-        System.out.println("Welcome to Safwa Hotel \n");
+        System.out.println("Welcome to Safwa Hotel, " + currentUser + "!\n");
 
         do {
-            
             displayMenu();
             System.out.print("choice: ");
             options = input.nextInt();
@@ -52,12 +57,12 @@ public class Safwa_Hotel {
 
     private static void exploreRooms() {
         int roomType;
-    
+
         do {
             System.out.println("Choose room type:\n1-Single rooms\n2-Double rooms\n");
             System.out.print("choice :");
             roomType = input.nextInt();
-    
+
             if (roomType == 1) {
                 singleRoomsAvailable();
             } else if (roomType == 2) {
@@ -66,6 +71,7 @@ public class Safwa_Hotel {
                 System.out.println("Invalid choice. Please choose one of the provided options.");
             }
         } while (roomType > 2 || roomType < 1);
+
         System.out.println();
         System.out.println("Want to book a room? y/n");
         String answer = input.next();
@@ -76,12 +82,13 @@ public class Safwa_Hotel {
         }
         System.out.println();
     }
-    
 
     private static void singleRoomsAvailable() {
         for (String room : single_rooms) {
             System.out.println("Room " + room);
         }
+        System.out.println();
+        System.out.println("The Single Room bears the cost " + Cost[0]);
         System.out.println();
     }
 
@@ -90,11 +97,13 @@ public class Safwa_Hotel {
             System.out.println("Room " + room);
         }
         System.out.println();
+        System.out.println("The Double Room bears the cost " + Cost[1]);
+        System.out.println();
     }
 
     private static void viewAllRooms() {
-        System.out.println("room 100\nroom 101\nroom 102\nroom 103\nroom 104");
-        System.out.println("room 200\nroom 201\nroom 202\nroom 203\nroom 204");
+        System.out.println("room 101\nroom 102\nroom 103\nroom 104\nroom 105");
+        System.out.println("room 201\nroom 202\nroom 203\nroom 204\nroom 205");
         System.out.println();
         System.out.println("Want to book a room? y/n");
         String answer = input.next();
@@ -105,42 +114,48 @@ public class Safwa_Hotel {
         }
     }
 
+    private static boolean isRoomAvailable(String roomNumber, String[] roomType) {
+        for (String room : roomType) {
+            if (room.equals(roomNumber)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static void bookRoom() {
-        System.out.println("Rooms available:");
-        System.out.println("Single rooms:");
-        singleRoomsAvailable();
-        System.out.println("Double rooms:");
-        doubleRoomsAvailable();
-        System.out.println("Enter room number:");
-        String roomNumber = input.next();
+        boolean isRoomAvailable;
 
-        boolean isRoomAvailable = false;
+        do {
+            System.out.println("Rooms available:");
+            System.out.println("Single rooms:");
+            singleRoomsAvailable();
+            System.out.println("Double rooms:");
+            doubleRoomsAvailable();
+            System.out.println("Enter room number:");
+            String roomNumber = input.next();
 
-        for (String room : single_rooms) {
-            if (room.equals(roomNumber)) {
-                isRoomAvailable = true;
-                break;
+            isRoomAvailable = isRoomAvailable(roomNumber, single_rooms) || isRoomAvailable(roomNumber, double_rooms);
+
+            if (isRoomAvailable) {
+                bookedRoom = roomNumber;
+                System.out.println("Room " + roomNumber + " booked successfully by " + currentUser + "!");
+            } else {
+                System.out.println();
+                System.out.println("Invalid room number. Please choose a valid room.");
             }
-        }
 
-        for (String room : double_rooms) {
-            if (room.equals(roomNumber)) {
-                isRoomAvailable = true;
-                break;
-            }
-        }
+        } while (!isRoomAvailable);
 
-        if (isRoomAvailable) {
-            System.out.println("Room " + roomNumber + " booked successfully!");
-            System.out.println();
-        } else {
-            System.out.println("Invalid room number");
-            System.out.println();
-        }
+        System.out.println();
     }
 
     private static void listBookings() {
-        System.out.println("No bookings made previously."); 
+        if (currentUser != null && bookedRoom != null) {
+            System.out.println("Your Booking: Room " + bookedRoom + " booked by " + currentUser);
+        } else {
+            System.out.println("You have not made any bookings yet.");
+        }
         System.out.println();
     }
 }
