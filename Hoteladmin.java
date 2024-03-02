@@ -15,8 +15,8 @@ package hoteladmin;
     private static String[] ffavailability = {"available","available","occupied","available","occupied"};
     private static final String[] secondfloor = {"201", "202", "203", "204", "205"};
     private static String[] sfavailability = {"available","available","occupied","available","occupied"};
-    private static String available="available";
-    private static String occupied="occupied";
+    private static final String available="available";
+    private static final String occupied="occupied";
 
     //************************************************************************************************************
         public static void main(String[] args) { 
